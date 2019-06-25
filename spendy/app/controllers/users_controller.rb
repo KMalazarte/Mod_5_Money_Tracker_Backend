@@ -14,17 +14,15 @@ class UsersController < ApplicationController
   end
 
   def profile
+    user = User.find_by(username: params['username'])
 
-    user = User.find(user_id)
-
-    render json: user
-
+    render json: current_user
   end
 
   private
 
   def user_params
-    params.permit(:username, :password)
+      params.require(:user).permit(:username, :password)
   end
 
 end
