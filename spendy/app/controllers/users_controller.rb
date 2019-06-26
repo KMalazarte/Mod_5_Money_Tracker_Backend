@@ -1,16 +1,14 @@
 class UsersController < ApplicationController
 
   def create
-    user = User.create(user_params)
+    @user = User.create(user_params)
 
-    is_valid = user.valid?
-
-    if is_valid
-      render json: { token: encode_token(user) }
+    if @user.valid?
+      render json: { user: UserSerializer.new(@user) }, status: :created
     else
-      render json: { errors: user.errors.full_messages }
+      render json: { error: 'failed to create user' }, status: :not_acceptable
     end
-
+    
   end
 
   def profile
